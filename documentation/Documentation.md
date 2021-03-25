@@ -30,3 +30,10 @@ Access API Documentation on `http://localhost:8010/api-docs/`
 ## EsLint Configuration
 
 ![EsLint Configuration](./screenshots/EsLint_2021-03-25 01.png)
+
+## Continous Integration
+
+- Using Travis CI as continous integration
+
+![Part 1](./screenshots/CI_p1_2021-03-25.png)
+![Part 2](./screenshots/CI_p2_2021-03-25.png)
