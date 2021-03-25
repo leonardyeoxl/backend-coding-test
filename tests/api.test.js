@@ -81,7 +81,20 @@ describe('API tests', () => {
                 .expect('Content-Type', /json/)
                 .expect(200, {
                     error_code: 'VALIDATION_ERROR',
-                    message: 'Rider name must be a non empty string'
+                    message: 'Driver name must be a non empty string'
+                }, done);
+        });
+    });
+
+    describe('POST /rides', () => {
+        it('should return insert a ride and return the inserted ride with invalid driver vehicle datatype', (done) => {
+            request(app)
+                .post('/rides')
+                .send({start_lat: 1, start_long: 1, end_lat: 1, end_long: 1, rider_name: "John", driver_name: "Jim", driver_vehicle: ""})
+                .expect('Content-Type', /json/)
+                .expect(200, {
+                    error_code: 'VALIDATION_ERROR',
+                    message: 'Driver vehicle name must be a non empty string'
                 }, done);
         });
     });
