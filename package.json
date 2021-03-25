@@ -10,6 +10,9 @@
     "test": "nyc mocha tests",
     "start": "node index.js"
   },
+  "pre-push": [
+    "test"
+  ],
   "nyc": {
     "branches": 80,
     "lines": 80,
