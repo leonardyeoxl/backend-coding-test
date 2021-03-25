@@ -1,0 +1,185 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a sample server for Xendit Delivery.",
+    "version": "1.0.0",
+    "title": "Delivery Service",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:8010",
+  "basePath": "",
+  "tags": [
+    {
+      "name": "Health",
+      "description": "Server Operations"
+    },
+    {
+      "name": "Rides",
+      "description": "Rides Operations"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Check health of server",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Healthy"
+          }
+        }
+      }
+    },
+    "/rides": {
+      "post": {
+        "tags": [
+          "Rides"
+        ],
+        "summary": "Add ride",
+        "description": "",
+        "operationId": "insertRide",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Rides"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "application/json": {
+                "error_code": "VALIDATION_ERROR",
+                "message": "Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Rides"
+        ],
+        "summary": "Find all rides",
+        "description": "Returns all rides",
+        "operationId": "getAllRides",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfRides"
+            }
+          }
+        }
+      }
+    },
+    "/rides/{id}": {
+      "get": {
+        "tags": [
+          "Rides"
+        ],
+        "summary": "Find ride by ID",
+        "description": "Returns a single ride",
+        "operationId": "getRideById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of ride to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Rides"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Rides": {
+      "type": "object",
+      "required": [
+        "start_lat",
+        "start_long",
+        "end_lat",
+        "end_long",
+        "rider_name",
+        "driver_name",
+        "driver_vehicle"
+      ],
+      "properties": {
+        "start_lat": {
+          "type": "number",
+          "format": "float32"
+        },
+        "start_long": {
+          "type": "number",
+          "format": "float32"
+        },
+        "end_lat": {
+          "type": "number",
+          "format": "float32"
+        },
+        "end_long": {
+          "type": "number",
+          "format": "float32"
+        },
+        "rider_name": {
+          "type": "string"
+        },
+        "driver_name": {
+          "type": "string"
+        },
+        "driver_vehicle": {
+          "type": "string"
+        }
+      }
+    },
+    "ArrayOfRides": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Rides"
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
