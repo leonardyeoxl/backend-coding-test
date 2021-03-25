@@ -1,6 +1,7 @@
 'use strict';
 
 const request = require('supertest');
+const expect = require('chai').expect;
 
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database(':memory:');
@@ -162,11 +163,17 @@ describe('API tests', () => {
   });
 
   describe('GET /rides', () => {
-    it('should return all rides', (done) => {
-      request(app)
-          .get('/rides')
-          .expect('Content-Type', /json/)
-          .expect(200, done);
+    it('should return all rides', async () => {
+      const response = await request(app)
+          .get('/rides');
+      expect(response.status).to.eql(200);
+      expect(JSON.parse(response.text).length).to.eql(2);
+      expect(JSON.parse(response.text)[0].length).to.eql(2);
+      expect(JSON.parse(response.text)[1].length).to.eql(2);
+      expect(JSON.parse(response.text)[0][0].rideID).to.eql(1);
+      expect(JSON.parse(response.text)[0][1].rideID).to.eql(2);
+      expect(JSON.parse(response.text)[1][0].rideID).to.eql(3);
+      expect(JSON.parse(response.text)[1][1].rideID).to.eql(4);
     });
   });
 
