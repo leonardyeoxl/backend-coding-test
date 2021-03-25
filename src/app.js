@@ -17,6 +17,27 @@ const logger = winston.createLogger({
   ],
 });
 
+const config = require('./config');
+
+/**
+ * Create pagination of rides objects.
+ * @param {Array} arrayOfObjects array of objects.
+ * @param {Integer} chunkSize chuck size.
+ * @return {Array} array of objects after splitting into chunks.
+ */
+function chunkArrayHelper(arrayOfObjects, chunkSize) {
+  let index = 0;
+  const arrayLength = arrayOfObjects.length;
+  const tempArrayOfObjects = [];
+
+  for (index = 0; index < arrayLength; index += chunkSize) {
+    const chunk = arrayOfObjects.slice(index, index+chunkSize);
+    tempArrayOfObjects.push(chunk);
+  }
+
+  return tempArrayOfObjects;
+}
+
 
 module.exports = (db) => {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -101,6 +122,8 @@ module.exports = (db) => {
         });
       }
 
+      logger.info('Create rides SUCCESSFUL');
+
       db.all('SELECT * FROM Rides '+
       'WHERE rideID = ?', this.lastID, function(err, rows) {
         if (err) {
@@ -126,15 +149,20 @@ module.exports = (db) => {
         });
       }
 
+      logger.info('Rides length'+rows.length);
+
       if (rows.length === 0) {
         logger.error('RIDES_NOT_FOUND_ERROR'+'Could not find any rides');
         return res.send({
           error_code: 'RIDES_NOT_FOUND_ERROR',
           message: 'Could not find any rides',
         });
+      } else {
+        // Split in group of n items
+        const ridesPages = chunkArrayHelper(rows, config.num_pages);
+        logger.info(ridesPages);
+        res.send(ridesPages);
       }
-
-      res.send(rows);
     });
   });
 
