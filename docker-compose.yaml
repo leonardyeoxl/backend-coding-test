@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+    api-endpoint:
+        build: .
+        volumes:
+            - .:/app
+        ports:
+            - "8010:8010"
