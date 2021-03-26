@@ -124,6 +124,7 @@ describe('API tests', () => {
           .expect(200, {
             error_code: 'VALIDATION_ERROR',
             message: 'Rider name must be a non empty string',
+            status: false,
           }, done);
     });
   });
@@ -141,6 +142,7 @@ describe('API tests', () => {
           .expect(200, {
             error_code: 'VALIDATION_ERROR',
             message: 'Driver name must be a non empty string',
+            status: false,
           }, done);
     });
   });
@@ -158,6 +160,7 @@ describe('API tests', () => {
           .expect(200, {
             error_code: 'VALIDATION_ERROR',
             message: 'Driver vehicle name must be a non empty string',
+            status: false,
           }, done);
     });
   });
@@ -181,11 +184,11 @@ describe('API tests', () => {
   });
 
   describe('GET /rides/:id', () => {
-    it('should return a ride by id', (done) => {
-      request(app)
-          .get('/rides/1')
-          .expect('Content-Type', /json/)
-          .expect(200, done);
+    it('should return a ride by id', async () => {
+      const response = await request(app)
+          .get('/rides/1');
+      expect(response.status).to.eql(200);
+      expect(JSON.parse(response.text).length).to.eql(1);
     });
   });
 });
