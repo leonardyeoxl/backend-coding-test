@@ -1,0 +1,13 @@
+{
+  "name": "backend-coding-test-load-testing",
+  "version": "1.0.0",
+  "description": "A coding assessment for Xendit backend interviews",
+  "scripts": {
+    "test:load": "artillery run --output ./report/report.json load-tester.yaml; artillery report --output ./report/report.html ./report/report.json;"
+  },
+  "author": "LeonardYeo",
+  "license": "ISC",
+  "dependencies": {
+    "artillery": "^1.6.2"
+  }
+}

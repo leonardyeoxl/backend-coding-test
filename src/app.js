@@ -28,7 +28,7 @@ const validateLatLong = function(startLatitude, startLongitude,
       status: false,
       error_code: 'VALIDATION_ERROR',
       message: 'Start start latitude and start longitude must be between ' +
-      '-90 - 90 and -180 to 180 degrees respectively',
+        '-90 - 90 and -180 to 180 degrees respectively',
     };
   }
 
@@ -41,7 +41,7 @@ const validateLatLong = function(startLatitude, startLongitude,
       status: false,
       error_code: 'VALIDATION_ERROR',
       message: 'Start start latitude and start longitude must be between ' +
-      '-90 - 90 and -180 to 180 degrees respectively',
+        '-90 - 90 and -180 to 180 degrees respectively',
     };
   }
 
@@ -110,7 +110,7 @@ const validation = function(latLongValidationResult, PersonValidationResult) {
 };
 
 module.exports = (db) => {
-  const getRide = async function(req, sql, value) {
+  const getRide = async function(sql, value) {
     return new Promise((resolve, reject) => {
       db.all(sql, value, (err, rows) => {
         if (err) {
@@ -191,7 +191,7 @@ module.exports = (db) => {
       const sql = 'SELECT * FROM Rides ' +
         'WHERE rideID > ?' +
         ' LIMIT ?';
-      const rows = await getRide(req, sql, [req.params.id, req.params.limit]);
+      const rows = await getRide(sql, [req.params.id, req.params.limit]);
 
       if (rows.length === 0) {
         logger.error('RIDES_NOT_FOUND_ERROR' + 'Could not find any rides');
@@ -215,7 +215,7 @@ module.exports = (db) => {
     try {
       const sql = 'SELECT * FROM Rides ' +
         'WHERE rideID = ?';
-      const rows = await getRide(req, sql, [req.params.id]);
+      const rows = await getRide(sql, [req.params.id]);
 
       if (rows.length === 0) {
         logger.error('RIDES_NOT_FOUND_ERROR' + 'Could not find any rides');
