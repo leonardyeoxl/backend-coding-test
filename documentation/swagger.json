@@ -14,7 +14,7 @@
     }
   },
   "host": "localhost:8010",
-  "basePath": "",
+  "basePath": "/",
   "tags": [
     {
       "name": "Health",
@@ -26,7 +26,7 @@
     }
   ],
   "schemes": [
-    "http"
+    "http", "https"
   ],
   "paths": {
     "/health": {
@@ -75,16 +75,36 @@
             }
           }
         }
-      },
+      }
+    },
+    "/rides/{id}/{limit}": {
       "get": {
         "tags": [
           "Rides"
         ],
-        "summary": "Find all rides",
-        "description": "Returns all rides",
+        "summary": "Find all rides by pages",
+        "description": "Returns all rides by pages",
         "operationId": "getAllRides",
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of ride as a start",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "limit",
+            "in": "path",
+            "description": "limit",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
         ],
         "responses": {
           "200": {
@@ -132,6 +152,7 @@
     "Rides": {
       "type": "object",
       "required": [
+        "rideID",
         "start_lat",
         "start_long",
         "end_lat",
@@ -141,6 +162,10 @@
         "driver_vehicle"
       ],
       "properties": {
+        "rideID": {
+          "type": "number",
+          "format": "int32"
+        },
         "start_lat": {
           "type": "number",
           "format": "float32"
