@@ -37,3 +37,8 @@ Access API Documentation on `http://localhost:8010/api-docs/`
 
 ![Part 1](./screenshots/CI_p1_2021-03-25.png)
 ![Part 2](./screenshots/CI_p2_2021-03-25.png)
+
+## Security
+
+- Prepared statements to prevent/minimise SQL injection
+- Add SSL/TLS on server

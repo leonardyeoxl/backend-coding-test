@@ -26,7 +26,7 @@
     }
   ],
   "schemes": [
-    "http"
+    "http", "https"
   ],
   "paths": {
     "/health": {

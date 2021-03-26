@@ -184,6 +184,16 @@ describe('API tests', () => {
   });
 
   describe('GET /rides/:id', () => {
+    it('should return a ride by id. TESTING for SQL Injection', async () => {
+      const response = await request(app)
+          .get('/rides/1 OR 1=1');
+      expect(response.status).to.eql(200);
+      const message = 'RIDES_NOT_FOUND_ERROR';
+      expect(JSON.parse(response.text)['error_code']).to.eql(message);
+    });
+  });
+
+  describe('GET /rides/:id', () => {
     it('should return a ride by id', async () => {
       const response = await request(app)
           .get('/rides/1');

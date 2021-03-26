@@ -110,9 +110,9 @@ const validation = function(latLongValidationResult, PersonValidationResult) {
 };
 
 module.exports = (db) => {
-  const getRide = async function(req, sql) {
+  const getRide = async function(req, sql, value) {
     return new Promise((resolve, reject) => {
-      db.all(sql, [], (err, rows) => {
+      db.all(sql, value, (err, rows) => {
         if (err) {
           logger.error('SERVER_ERROR' + 'Unknown error');
           reject(err);
@@ -140,7 +140,7 @@ module.exports = (db) => {
       });
     }).then(function(lastID) {
       db.all('SELECT * FROM Rides ' +
-        'WHERE rideID = ?', lastID, function(err, rows) {
+        'WHERE rideID = ?', [lastID], function(err, rows) {
         if (err) {
           logger.error('SERVER_ERROR' + 'Unknown error');
           return res.send({
@@ -188,10 +188,10 @@ module.exports = (db) => {
 
   app.get('/rides/:id/:limit', async (req, res) => {
     try {
-      const sql = `SELECT * FROM Rides ` +
-        `WHERE rideID > '${req.params.id}'` +
-        ` LIMIT '${req.params.limit}'`;
-      const rows = await getRide(req, sql);
+      const sql = 'SELECT * FROM Rides ' +
+        'WHERE rideID > ?' +
+        ' LIMIT ?';
+      const rows = await getRide(req, sql, [req.params.id, req.params.limit]);
 
       if (rows.length === 0) {
         logger.error('RIDES_NOT_FOUND_ERROR' + 'Could not find any rides');
@@ -213,9 +213,9 @@ module.exports = (db) => {
 
   app.get('/rides/:id', async (req, res) => {
     try {
-      const sql = `SELECT * FROM Rides ` +
-        `WHERE rideID = '${req.params.id}'`;
-      const rows = await getRide(req, sql);
+      const sql = 'SELECT * FROM Rides ' +
+        'WHERE rideID = ?';
+      const rows = await getRide(req, sql, [req.params.id]);
 
       if (rows.length === 0) {
         logger.error('RIDES_NOT_FOUND_ERROR' + 'Could not find any rides');
