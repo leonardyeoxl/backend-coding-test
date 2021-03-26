@@ -162,18 +162,21 @@ describe('API tests', () => {
     });
   });
 
-  describe('GET /rides', () => {
-    it('should return all rides', async () => {
+  describe('GET /rides/:id/:limit', () => {
+    it('should return all rides by id and limit', async () => {
       const response = await request(app)
-          .get('/rides');
+          .get('/rides/0/3');
       expect(response.status).to.eql(200);
-      expect(JSON.parse(response.text).length).to.eql(2);
-      expect(JSON.parse(response.text)[0].length).to.eql(2);
-      expect(JSON.parse(response.text)[1].length).to.eql(2);
-      expect(JSON.parse(response.text)[0][0].rideID).to.eql(1);
-      expect(JSON.parse(response.text)[0][1].rideID).to.eql(2);
-      expect(JSON.parse(response.text)[1][0].rideID).to.eql(3);
-      expect(JSON.parse(response.text)[1][1].rideID).to.eql(4);
+      expect(JSON.parse(response.text).length).to.eql(3);
+    });
+  });
+
+  describe('GET /rides/:id/:limit', () => {
+    it('should return all rides by id and limit', async () => {
+      const response = await request(app)
+          .get('/rides/3/3');
+      expect(response.status).to.eql(200);
+      expect(JSON.parse(response.text).length).to.eql(1);
     });
   });
 

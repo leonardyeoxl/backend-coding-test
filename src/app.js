@@ -17,27 +17,6 @@ const logger = winston.createLogger({
   ],
 });
 
-const config = require('./config');
-
-/**
- * Create pagination of rides objects.
- * @param {Array} arrayOfObjects array of objects.
- * @param {Integer} chunkSize chuck size.
- * @return {Array} array of objects after splitting into chunks.
- */
-function chunkArrayHelper(arrayOfObjects, chunkSize) {
-  let index = 0;
-  const arrayLength = arrayOfObjects.length;
-  const tempArrayOfObjects = [];
-
-  for (index = 0; index < arrayLength; index += chunkSize) {
-    const chunk = arrayOfObjects.slice(index, index+chunkSize);
-    tempArrayOfObjects.push(chunk);
-  }
-
-  return tempArrayOfObjects;
-}
-
 
 module.exports = (db) => {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -139,8 +118,10 @@ module.exports = (db) => {
     });
   });
 
-  app.get('/rides', (req, res) => {
-    db.all('SELECT * FROM Rides', function(err, rows) {
+  app.get('/rides/:id/:limit', (req, res) => {
+    db.all(`SELECT * FROM Rides `+
+    `WHERE rideID > '${req.params.id}'`+
+    ` LIMIT '${req.params.limit}'`, function(err, rows) {
       if (err) {
         logger.error('SERVER_ERROR'+'Unknown error');
         return res.send({
@@ -157,12 +138,9 @@ module.exports = (db) => {
           error_code: 'RIDES_NOT_FOUND_ERROR',
           message: 'Could not find any rides',
         });
-      } else {
-        // Split in group of n items
-        const ridesPages = chunkArrayHelper(rows, config.num_pages);
-        logger.info(ridesPages);
-        res.send(ridesPages);
       }
+
+      res.send(rows);
     });
   });
 
