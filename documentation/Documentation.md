@@ -18,7 +18,7 @@
 ## Run container
 
 ```sh
-~/backend-coding-test$ docker run -it -v `pwd`:/app/ --publish=$(ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p'):8010:8010/tcp backendcodingtest_api-endpoint:latest sh
+~/backend-coding-test$ docker run -it -v `pwd`:/app/ -p 8010:8010/tcp backendcodingtest_api-endpoint:latest sh
 /app # npm install
 ```
 
@@ -69,5 +69,11 @@ Access API Documentation on `http://localhost:8010/api-docs/`
 - Add SSL/TLS on server
 
 ## Load Testing
+
+### Instructions
+
+1. Navigate to root directory
+2. On the terminal, type `docker-compose build`
+3. On the same terminal, type `docker-compose up` 
 
 ![Load Testing](./screenshots/Load_Testing_2021-03-27.png)

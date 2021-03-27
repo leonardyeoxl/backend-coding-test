@@ -1,5 +1,5 @@
 config:
-  target: "https://192.168.150.133:8010"
+  target: https://api-endpoint:8010
   tls:
     rejectUnauthorized: false
   phases:
