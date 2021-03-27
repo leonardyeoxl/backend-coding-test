@@ -7,3 +7,20 @@ services:
             - .:/app
         ports:
             - "8010:8010"
+        command: ["npm", "start"]
+        networks:
+            - common_net
+    load-testing:
+        build:
+            context: ./load_testing
+            dockerfile: Dockerfile
+        build: ./load_testing
+        volumes:
+            - "./load_testing/:/app"
+        command: ["npm", "run", "test:load"]
+        networks:
+            - common_net
+
+networks:
+  common_net:
+    driver: bridge

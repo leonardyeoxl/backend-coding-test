@@ -4,3 +4,4 @@ WORKDIR /app
 
 COPY . .
 RUN npm install
+RUN chmod +x run.sh
